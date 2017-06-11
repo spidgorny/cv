@@ -54,3 +54,11 @@ not available. Let's use "http://github-cv.me/profile-name/".
 ## Example
 
 Here's [my CV](cv.md) as an example. Feel free to fork and modify it for yourself.
+
+## Alternatives
+
+* [Seeveeze](https://www.seeveeze.com/de/). The professional CV editor.
+* [Appolo Resume](https://apollo-resume.co/). Create impressive resumes.
+* [Responsive CV](https://responsivecv.com/linkedin-resume-builder-online-free/). We help you make awesome first impression
+with mobile resume along with free online CV.
+* [re:Scan Chrome Ext.](https://chrome.google.com/webstore/detail/rescan/fjiopcojjjafjnfgipombdbpjimignpl?hl=en). A Chrome extension that provides a detailed report on how well-tailored an applicant's resume is to a particular job description.
