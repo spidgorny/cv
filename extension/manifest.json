@@ -1,0 +1,27 @@
+{
+	"manifest_version": 2,
+
+	"name": "Apply to jobs",
+	"description": "You can fill-in job application forms with your CV automatically",
+	"version": "1.0",
+
+	"browser_action": {
+		"default_icon": "img/icon.png"
+	},
+	"background": {
+		"scripts": ["src/background_apply.min.js"]
+	},
+
+	"permissions": [
+		"activeTab",
+		"tabs",
+		"http://*/*",
+		"https://*/*"
+	],
+	"content_scripts": [
+		{
+			"matches": ["http://*/*", "https://*/*"],
+			"js": ["src/content_apply.min.js"]
+		}
+	]
+}
