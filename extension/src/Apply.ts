@@ -1,9 +1,12 @@
 // import {FieldConfig} from './FieldConfig';
 
+import {IndeedCom} from "./sites/IndeedCom";
+
 const FieldConfig = require('./FieldConfig').FieldConfig;
 import {FillerInterface} from './FillerInterface';
 import {JSONResume} from "./JSONResume";
 import {OnApplyDe} from "./sites/OnApplyDe";
+import {BMWGroupDe} from "./sites/BMWGroupDe";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -17,6 +20,12 @@ export class Apply {
 	$$: Function;
 
 	resume: JSONResume;
+
+	fillerMap = {
+		'onapply.de': OnApplyDe,
+		'indeed.com': IndeedCom,
+		'bmwgroup.de': BMWGroupDe,
+	};
 
 	constructor(document) {
 		this.document = document;
@@ -175,14 +184,11 @@ export class Apply {
 
 	getFiller(host: string): FillerInterface {
 		let filler;
-		const map = {
-			'onapply.de': OnApplyDe,
-		};
-		const one = Object.keys(map).filter((domain: string) => {
+		const one = Object.keys(this.fillerMap).filter((domain: string) => {
 			return host.endsWith(domain);
 		});
 		if (one.length) {
-			const className = map[one[0]];	// onapply.de => OnApplyDe
+			const className = this.fillerMap[one[0]];	// onapply.de => OnApplyDe
 
 			//filler = require('./sites/' + className);
 			//filler = filler[className];

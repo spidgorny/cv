@@ -1,6 +1,7 @@
 {
 	"basics": {
 		"title": "Sir",
+		"anrede": "Herr",
 		"firstName": "Thomas",
 		"lastName": "Davis",
 		"name": "Thomas Davis",
@@ -9,6 +10,8 @@
 		"email": "thomasalwyndavis@gmail.com",
 		"website": "https://ajaxdavis.com",
 		"phone": "+49123654987",
+		"username": "sir-thomas-davis",
+		"password": "password",
 		"location": {
 			"city": "Melbourne",
 			"countryCode": "AU"

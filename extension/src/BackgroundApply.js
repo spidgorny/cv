@@ -1,23 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var BackgroundApply = (function () {
-    function BackgroundApply() {
+class BackgroundApply {
+    constructor() {
         console.log('BackgroundApply');
         chrome.browserAction.onClicked.addListener(this.clickIcon.bind(this));
     }
-    BackgroundApply.prototype.clickIcon = function () {
-        var _this = this;
+    clickIcon() {
         console.log('clickIcon');
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             console.log('tabs', tabs);
             if (tabs.length) {
-                chrome.tabs.sendMessage(tabs[0].id, {}, _this.resultOfClick.bind(_this));
+                chrome.tabs.sendMessage(tabs[0].id, {}, this.resultOfClick.bind(this));
             }
         });
-    };
-    BackgroundApply.prototype.resultOfClick = function (response) {
+    }
+    resultOfClick(response) {
         console.log('resultOfClick', response);
-    };
-    return BackgroundApply;
-}());
+    }
+}
 exports.BackgroundApply = BackgroundApply;

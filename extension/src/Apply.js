@@ -1,13 +1,20 @@
 "use strict";
 // import {FieldConfig} from './FieldConfig';
 Object.defineProperty(exports, "__esModule", { value: true });
+const IndeedCom_1 = require("./sites/IndeedCom");
 const FieldConfig = require('./FieldConfig').FieldConfig;
 const JSONResume_1 = require("./JSONResume");
 const OnApplyDe_1 = require("./sites/OnApplyDe");
+const BMWGroupDe_1 = require("./sites/BMWGroupDe");
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
 class Apply {
     constructor(document) {
+        this.fillerMap = {
+            'onapply.de': OnApplyDe_1.OnApplyDe,
+            'indeed.com': IndeedCom_1.IndeedCom,
+            'bmwgroup.de': BMWGroupDe_1.BMWGroupDe,
+        };
         this.document = document;
         this.$ = this.document.querySelector.bind(this.document);
         this.$$ = selector => {
@@ -152,14 +159,11 @@ class Apply {
     }
     getFiller(host) {
         let filler;
-        const map = {
-            'onapply.de': OnApplyDe_1.OnApplyDe,
-        };
-        const one = Object.keys(map).filter((domain) => {
+        const one = Object.keys(this.fillerMap).filter((domain) => {
             return host.endsWith(domain);
         });
         if (one.length) {
-            const className = map[one[0]]; // onapply.de => OnApplyDe
+            const className = this.fillerMap[one[0]]; // onapply.de => OnApplyDe
             //filler = require('./sites/' + className);
             //filler = filler[className];
             //filler = new this[className]();
