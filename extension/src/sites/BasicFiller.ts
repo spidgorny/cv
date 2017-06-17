@@ -13,7 +13,10 @@ export class BasicFiller implements FillerInterface {
 			const el: HTMLInputElement|HTMLSelectElement = <any>document.querySelector(selector);
 			if (el) {
 				if (el.tagName.toUpperCase() == 'SELECT') {
-					this.fillSelect(<HTMLSelectElement>el, value);
+					this.fillSelect(<HTMLSelectElement>el,
+						value,
+						Array.isArray(value) ? value : [value]
+					);
 				} else {
 					el.value = value;
 				}
@@ -21,11 +24,17 @@ export class BasicFiller implements FillerInterface {
 		});
 	}
 
-	fillSelect(el: HTMLSelectElement, value: string) {
+	fillSelect(el: HTMLSelectElement, value: string, values: string[]) {
 		const options = [].slice.call(el.options).map((el: HTMLOptionElement) => {
 			return el.innerHTML.trim();
 		});
-		const index = options.indexOf(value);
+
+		// values.reduce((acc, el) => {
+		// 	if (acc > -1) {
+		// 	let index = options.indexOf(valueItem);
+		// }, -1);
+
+		let index = options.indexOf(value);
 		console.log(options, value, index);
 		if (index >= 0) {
 			el.selectedIndex = index;

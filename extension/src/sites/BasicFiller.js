@@ -9,7 +9,7 @@ class BasicFiller {
             const el = document.querySelector(selector);
             if (el) {
                 if (el.tagName.toUpperCase() == 'SELECT') {
-                    this.fillSelect(el, value);
+                    this.fillSelect(el, value, Array.isArray(value) ? value : [value]);
                 }
                 else {
                     el.value = value;
@@ -17,11 +17,15 @@ class BasicFiller {
             }
         });
     }
-    fillSelect(el, value) {
+    fillSelect(el, value, values) {
         const options = [].slice.call(el.options).map((el) => {
             return el.innerHTML.trim();
         });
-        const index = options.indexOf(value);
+        // values.reduce((acc, el) => {
+        // 	if (acc > -1) {
+        // 	let index = options.indexOf(valueItem);
+        // }, -1);
+        let index = options.indexOf(value);
         console.log(options, value, index);
         if (index >= 0) {
             el.selectedIndex = index;

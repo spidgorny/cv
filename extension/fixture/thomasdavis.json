@@ -2,6 +2,7 @@
 	"basics": {
 		"title": "Sir",
 		"anrede": "Herr",
+		"title": ["Dipl.-Informatiker (FH)", "CS Major"],
 		"firstName": "Thomas",
 		"lastName": "Davis",
 		"name": "Thomas Davis",
@@ -10,11 +11,17 @@
 		"email": "thomasalwyndavis@gmail.com",
 		"website": "https://ajaxdavis.com",
 		"phone": "+49123654987",
+		"phone2": "+4932154568",
+		"fax": "fax?",
 		"username": "sir-thomas-davis",
 		"password": "password",
+		"preferredContact": ["E-mail", "e-mail"],
 		"location": {
+			"street": "Some nice street 15",
+			"zip": "32145",
 			"city": "Melbourne",
-			"countryCode": "AU"
+			"countryCode": "AU",
+			"country": "Ghana"
 		},
 		"profiles": [
 			{
@@ -29,6 +36,7 @@
 			}
 		]
 	},
+	"coverLetter": "Hi, I'm a super person. Hire me.",
 	"education": [
 		{
 			"endDate": "2009-12-12",

@@ -2,7 +2,7 @@ import {BasicFiller} from './BasicFiller';
 import {FillerInterface} from "../FillerInterface";
 
 /**
- * @see https://de.indeed.com/viewjob?jk=1f37eef6ca8b860f&q=php&tk=1birctct992sgddm&from=web
+ * @see 
  */
 export class BMWGroupDe extends BasicFiller implements FillerInterface {
 
