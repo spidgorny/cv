@@ -10,10 +10,12 @@ export class BasicFiller implements FillerInterface {
 			const path = this.map[selector];
 			const value = resume.findDeep(path);
 			const el: HTMLInputElement|HTMLSelectElement = <any>document.querySelector(selector);
-			if (el.tagName.toUpperCase() == 'SELECT') {
-				el.selectedIndex = value;
-			} else {
-				el.value = value;
+			if (el) {
+				if (el.tagName.toUpperCase() == 'SELECT') {
+					el.selectedIndex = value;
+				} else {
+					el.value = value;
+				}
 			}
 		});
 	}

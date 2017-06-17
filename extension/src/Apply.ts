@@ -1,7 +1,10 @@
 // import {FieldConfig} from './FieldConfig';
+
 const FieldConfig = require('./FieldConfig').FieldConfig;
 import {FillerInterface} from './FillerInterface';
 import {JSONResume} from "./sites/JSONResume";
+
+const isBrowser = this.window === this;
 
 export class Apply {
 
@@ -22,10 +25,12 @@ export class Apply {
 			return [].slice.call(list);
 		};
 
-		chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
+		if (isBrowser) {
+			chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
+		}
 
-		this.resume = require('./../fixture/thomasdavis.json');
-		console.log(this.resume);
+		this.resume = new JSONResume(require('./../fixture/thomasdavis.json'));
+		// console.log(this.resume);
 	}
 
 	checkForm() {
@@ -142,7 +147,7 @@ export class Apply {
 		if (one.length) {
 			const className = map[one[0]];	// onapply.de => OnApplyDe
 			filler = require('./sites/' + className);
-			// filler = filler[className];
+			filler = filler[className];
 		}
 		return filler;
 	}
