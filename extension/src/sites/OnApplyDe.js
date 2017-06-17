@@ -1,25 +1,19 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var BasicFiller_1 = require("./BasicFiller");
-var OnApplyDe = (function (_super) {
-    __extends(OnApplyDe, _super);
-    function OnApplyDe() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.map = {
-            'input#applicationform-firstname': 'basics.firstName'
+const BasicFiller_1 = require("./BasicFiller");
+/**
+ * @see https://onapply.onapply.de/bewerbung/2620/On-apply-GmbH-Web-Developer-%28m-f%29-Frankfurt-am-Main--Deutschland.html
+ */
+class OnApplyDe extends BasicFiller_1.BasicFiller {
+    constructor() {
+        super(...arguments);
+        this.map = {
+            'select#applicationform-title': 'basics.title',
+            'input#applicationform-firstname': 'basics.firstName',
+            'input#applicationform-lastname': 'basics.lastName',
+            'input#applicationform-email': 'basics.email',
+            'input#applicationform-phonenumber': 'basics.phone',
         };
-        return _this;
     }
-    return OnApplyDe;
-}(BasicFiller_1.BasicFiller));
+}
 exports.OnApplyDe = OnApplyDe;

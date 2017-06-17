@@ -1,11 +1,14 @@
 {
 	"basics": {
+		"title": "Sir",
 		"firstName": "Thomas",
+		"lastName": "Davis",
 		"name": "Thomas Davis",
 		"label": "Web Developer",
 		"summary": "I’m a full stack web developer who loves working with open source technology. I work best at planning the architecture of web  applications and their development life cycles. I also love to get the community involved and have had much experience with building and organizing large open source groups.",
 		"email": "thomasalwyndavis@gmail.com",
 		"website": "https://ajaxdavis.com",
+		"phone": "+49123654987",
 		"location": {
 			"city": "Melbourne",
 			"countryCode": "AU"

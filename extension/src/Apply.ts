@@ -2,9 +2,11 @@
 
 const FieldConfig = require('./FieldConfig').FieldConfig;
 import {FillerInterface} from './FillerInterface';
-import {JSONResume} from "./sites/JSONResume";
+import {JSONResume} from "./JSONResume";
+import {OnApplyDe} from "./sites/OnApplyDe";
 
-const isBrowser = this.window === this;
+// const isBrowser = this.window === this;
+const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
 
 export class Apply {
 
@@ -36,7 +38,8 @@ export class Apply {
 	checkForm() {
 		const selectors = this.getSelectors();
 		if (selectors) {
-			console.log(selectors);
+			const json = this.zip(selectors, [], '');
+			console.log(JSON.stringify(json, null, 4));
 		} else {
 			console.log('no forms on this page');
 		}
@@ -52,7 +55,8 @@ export class Apply {
 		}
 
 		if (form) {
-			const fields = form.querySelectorAll('input,select,button,textarea');
+			let fields = form.querySelectorAll('input,select,button,textarea');
+			fields = [].slice.call(fields);
 			// console.log(fields);
 			const config = this.extractForm(fields);
 			// console.log(JSON.stringify(config, null, 4));
@@ -75,36 +79,63 @@ export class Apply {
 
 	extractForm(fields: HTMLInputElement[]) {
 		let collection = [];
+
+		const allClasses = fields.map(el => {
+			return el.className;
+		});
+		const classFrequency = this.getFrequency(allClasses);
+
 		fields.forEach(field => {
+			let labels = this.getLabels(field);
 			const config = new FieldConfig({
-				'selector': this.getSelector(field),
+				'selector': this.getSelector(field, labels, classFrequency),
 				'tagName': field.tagName.toLowerCase(),
 				'type': field.type,
 				'class': field.className,
 				'id': field.id,
-				'labels': field.labels
-					? [].slice.call(field.labels).map((el: HTMLLabelElement) => {
-						return el.innerText.trim();
-					}) : null,
+				'labels': labels,
 			});
 			collection.push(config);
 		});
 		return collection;
 	}
 
-	getSelector(field: HTMLInputElement) {
+	private getLabels(field: HTMLInputElement) {
+		return field.labels
+			? [].slice.call(field.labels).map((el: HTMLLabelElement) => {
+				return el.innerText.trim();
+			}) : null;
+	}
+
+	getSelector(field: HTMLInputElement, labels: string[]|null, classFrequency: string[]) {
 		let selector = field.tagName.toLowerCase();
-		if (field.id) {
+		// avoid id with numbers
+		if (field.id && !field.id.match(/[0-9]/)) {
 			selector += '#' + field.id;
-		} else if (field.name) {
+		} else if (field.name && !field.name.match(/[0-9]/)) {
 			selector += '[name="' + field.name + '"]';
-		} else if (field.className) {
+		} else if (field.className && classFrequency[field.className] == 1) {
 			const classes = field.className.split(' ');
-			selector += '.'+classes.join('.');
+			selector += '.' + classes.join('.');
+		// } else if (labels && labels.length) {
+		// 	selector = 'label:contains("'+labels[0]+'") '+selector;
+		} else if (field.name) {		// again with numbers
+			selector += '[name="' + field.name + '"]';
+		} else if (field.id) {			// again with numbers
+			selector += '#' + field.id;
 		} else if (field.type) {
-			selector += '[type="'+field.type+'"]';
+			selector += '[type="' + field.type + '"]';
 		}
 		return selector;
+	}
+
+	public getFrequency(array: Array<any>) {
+		return array.reduce(this.countDuplicates, {});
+	}
+
+	protected countDuplicates(obj, num) {
+		obj[num] = (++obj[num] || 1);
+		return obj;
 	}
 
 	messageHandler(request, sender, sendResponse) {
@@ -124,11 +155,11 @@ export class Apply {
 			const el = this.$(selector);
 			return el.selectedIndex ? el.options[el.value].value : el.value;
 		});
-		const zip = {};
-		selectors.forEach((key, idx) => zip[key] = values[idx]);
+		const zip = this.zip(selectors, values);
 		console.log(zip);
 
 		const filler = this.getFiller(document.location.host);
+		console.log(filler);
 		if (filler) {
 			filler.fill(document, this.resume);
 		} else {
@@ -136,18 +167,31 @@ export class Apply {
 		}
 	}
 
+	public zip(selectors: string[], values: any[], defaultV = undefined) {
+		const zip = {};
+		selectors.forEach((key, idx) => zip[key] = idx in values ? values[idx] : defaultV);
+		return zip;
+	}
+
 	getFiller(host: string): FillerInterface {
 		let filler;
 		const map = {
-			'onapply.de': 'OnApplyDe',
+			'onapply.de': OnApplyDe,
 		};
 		const one = Object.keys(map).filter((domain: string) => {
 			return host.endsWith(domain);
 		});
 		if (one.length) {
 			const className = map[one[0]];	// onapply.de => OnApplyDe
-			filler = require('./sites/' + className);
-			filler = filler[className];
+
+			//filler = require('./sites/' + className);
+			//filler = filler[className];
+
+			//filler = new this[className]();
+
+			// filler = Object.create(className);
+
+			filler = new className();
 		}
 		return filler;
 	}

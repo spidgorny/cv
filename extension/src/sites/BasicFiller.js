@@ -1,24 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var BasicFiller = (function () {
-    function BasicFiller() {
-    }
-    BasicFiller.prototype.fill = function (document, resume) {
-        var _this = this;
-        Object.keys(this.map).forEach(function (selector) {
-            var path = _this.map[selector];
-            var value = resume.findDeep(path);
-            var el = document.querySelector(selector);
+class BasicFiller {
+    fill(document, resume) {
+        Object.keys(this.map).forEach((selector) => {
+            const path = this.map[selector];
+            const value = resume.findDeep(path);
+            console.log(selector, path, value);
+            const el = document.querySelector(selector);
             if (el) {
                 if (el.tagName.toUpperCase() == 'SELECT') {
-                    el.selectedIndex = value;
+                    this.fillSelect(el, value);
                 }
                 else {
                     el.value = value;
                 }
             }
         });
-    };
-    return BasicFiller;
-}());
+    }
+    fillSelect(el, value) {
+        const options = [].slice.call(el.options).map((el) => {
+            return el.innerHTML.trim();
+        });
+        const index = options.indexOf(value);
+        console.log(options, value, index);
+        if (index >= 0) {
+            el.selectedIndex = index;
+        }
+        return el;
+    }
+}
 exports.BasicFiller = BasicFiller;
