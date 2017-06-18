@@ -1,13 +1,13 @@
 {
 	"basics": {
-		"anrede": ["Herr", "M", "Male", "male"],
-		"title": ["Sir", "Dipl.-Informatiker (FH)", "CS Major"],
+		"anrede": ["Herr", "M", "Male", "male", "Mr."],
+		"title": ["Sir", "Dipl.-Informatiker (FH)", "CS Major", "Prof."],
 		"firstName": "Slawa",
 		"lastName": "Jobsucher",
 		"name": "Slawa Jobsucher",
 		"label": "Web Developer",
 		"summary": "I’m a full stack web developer who loves working with open source technology. I work best at planning the architecture of web  applications and their development life cycles. I also love to get the community involved and have had much experience with building and organizing large open source groups.",
-		"email": "slapidya@gmail.com",
+		"email": "slapidya@yahoo.com",
 		"website": "https://github.com/spidgorny",
 		"phone": "+49",
 		"phone2": "+49",
@@ -15,12 +15,22 @@
 		"username": "slawa.jobsucher",
 		"password": "5nQ4AN9sgdP",
 		"preferredContact": ["E-mail", "e-mail", "E-Mail"],
+		"birthDate": {
+			"us": "06/18/2017",
+			"eu": "18.06.2017",
+			"iso": "2017-06-16"
+		},
+		"birthPlace": "Kiev, Ukraine",
+		"nationality": ["Germany", "Russia", "New Zealand"],
+		"legalRepresentative": "Mother",
+		"contactLanguage": "English",
 		"location": {
 			"street": "Upon request",
 			"zip": "60435",
 			"city": "Frankfurt am Main",
 			"countryCode": "DE",
-			"country": "Germany"
+			"country": "Germany",
+			"address2": ""
 		},
 		"profiles": [
 			{

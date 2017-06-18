@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const FieldConfig_1 = require("./FieldConfig");
 class DocumentFields {
     constructor(document) {
         this.document = document;
@@ -51,7 +52,7 @@ class DocumentFields {
         const classFrequency = this.getFrequency(allClasses);
         fields.forEach(field => {
             let labels = this.getLabels(field);
-            const config = new FieldConfig({
+            const config = new FieldConfig_1.FieldConfig({
                 'selector': this.getSelector(field, labels, classFrequency),
                 'tagName': field.tagName.toLowerCase(),
                 'type': field.type,

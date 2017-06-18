@@ -1,4 +1,4 @@
-
+import {FieldConfig} from './FieldConfig';
 
 export class DocumentFields {
 

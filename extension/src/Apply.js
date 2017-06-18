@@ -1,7 +1,6 @@
 "use strict";
-// import {FieldConfig} from './FieldConfig';
 Object.defineProperty(exports, "__esModule", { value: true });
-const FieldConfig = require('./FieldConfig').FieldConfig;
+// const FieldConfig = require('./FieldConfig').FieldConfig;
 const IndeedCom_1 = require("./sites/IndeedCom");
 const JSONResume_1 = require("./JSONResume");
 const OnApplyDe_1 = require("./sites/OnApplyDe");
@@ -29,6 +28,7 @@ class Apply {
         };
         if (isBrowser) {
             chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
+            window.apply = this;
         }
         this.resume = new JSONResume_1.JSONResume(require('./../fixture/thomasdavis.json'));
         // console.log(this.resume);

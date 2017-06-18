@@ -1,6 +1,5 @@
-// import {FieldConfig} from './FieldConfig';
 
-const FieldConfig = require('./FieldConfig').FieldConfig;
+// const FieldConfig = require('./FieldConfig').FieldConfig;
 import {IndeedCom} from "./sites/IndeedCom";
 import {FillerInterface} from './FillerInterface';
 import {JSONResume} from "./JSONResume";
@@ -42,6 +41,7 @@ export class Apply {
 
 		if (isBrowser) {
 			chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
+			window.apply = this;
 		}
 
 		this.resume = new JSONResume(require('./../fixture/thomasdavis.json'));
