@@ -1,27 +1,26 @@
 {
 	"basics": {
-		"title": "Sir",
-		"anrede": "Herr",
-		"title": ["Dipl.-Informatiker (FH)", "CS Major"],
-		"firstName": "Thomas",
-		"lastName": "Davis",
-		"name": "Thomas Davis",
+		"anrede": ["Herr", "M", "Male", "male"],
+		"title": ["Sir", "Dipl.-Informatiker (FH)", "CS Major"],
+		"firstName": "Slawa",
+		"lastName": "Jobsucher",
+		"name": "Slawa Jobsucher",
 		"label": "Web Developer",
 		"summary": "I’m a full stack web developer who loves working with open source technology. I work best at planning the architecture of web  applications and their development life cycles. I also love to get the community involved and have had much experience with building and organizing large open source groups.",
-		"email": "thomasalwyndavis@gmail.com",
-		"website": "https://ajaxdavis.com",
-		"phone": "+49123654987",
-		"phone2": "+4932154568",
+		"email": "slapidya@gmail.com",
+		"website": "https://github.com/spidgorny",
+		"phone": "+49",
+		"phone2": "+49",
 		"fax": "fax?",
-		"username": "sir-thomas-davis",
-		"password": "password",
+		"username": "slawa.jobsucher",
+		"password": "5nQ4AN9sgdP",
 		"preferredContact": ["E-mail", "e-mail", "E-Mail"],
 		"location": {
-			"street": "Some nice street 15",
-			"zip": "32145",
-			"city": "Melbourne",
-			"countryCode": "AU",
-			"country": "Ghana"
+			"street": "Upon request",
+			"zip": "60435",
+			"city": "Frankfurt am Main",
+			"countryCode": "DE",
+			"country": "Germany"
 		},
 		"profiles": [
 			{
@@ -36,9 +35,47 @@
 			}
 		]
 	},
-	"coverLetter": "Hi, I'm a super person. Hire me.",
+	"coverLetter": "Hi, I'm a rock-star developer. Hire me.",
 	"education": [
 		{
+			"type": "school",
+			"endDate": "2009-12-12",
+			"startDate": "2008-02-12",
+			"area": "Software Engineering (incomplete)",
+			"studyType": "Gymnasium",
+			"institution": "The University of Queensland",
+			"degree": "Abitur"
+		},
+		{
+			"type": "apprenticeship1",
+			"endDate": "2009-12-12",
+			"startDate": "2008-02-12",
+			"area": "Software Engineering (incomplete)",
+			"studyType": "Bachelors",
+			"institution": "The University of Queensland",
+			"location": "Berlin",
+			"comment": "It was nice"
+		},
+		{
+			"type": "apprenticeship2",
+			"endDate": "2009-12-12",
+			"startDate": "2008-02-12",
+			"area": "Software Engineering (incomplete)",
+			"studyType": "Bachelors",
+			"institution": "The University of Queensland",
+			"location": "Frankfurt",
+			"comment": "It was not nice"
+		},
+		{
+			"type": "education1",
+			"endDate": "2009-12-12",
+			"startDate": "2008-02-12",
+			"area": "Software Engineering (incomplete)",
+			"studyType": "Bachelors",
+			"institution": "The University of Queensland"
+		},
+		{
+			"type": "education2",
 			"endDate": "2009-12-12",
 			"startDate": "2008-02-12",
 			"area": "Software Engineering (incomplete)",

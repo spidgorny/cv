@@ -5,8 +5,8 @@ const BasicFiller_1 = require("./BasicFiller");
  * @see https://jobs.nintendo.de/main?fn=bm.ext.jobsform&refnr=2341288&land=DE
  */
 class JobsNintendoDe extends BasicFiller_1.BasicFiller {
-    constructor() {
-        super(...arguments);
+    constructor(resume) {
+        super(resume);
         this.map = {
             "input[name=\"bem\"]": "coverLetter",
             "select[name=\"kontakt\"]": "basics.preferredContact",
@@ -22,7 +22,29 @@ class JobsNintendoDe extends BasicFiller_1.BasicFiller {
             "input[name=\"telefon2\"]": "basics.phone2",
             "input[name=\"telefax\"]": "basics.fax",
             "input[name=\"email\"]": "basics.email",
+            "select[name=\"schule\"]": "educationByType.school.studyType",
+            "input[name=\"schule1\"]": "educationByType.school.studyType",
+            "select[name=\"abschl\"]": "educationByType.school.degree",
+            "input[name=\"abschl1\"]": "educationByType.school.degree",
+            "textarea[name=\"zinfo\"]": "educationByType.school.institution",
+            "input[name=\"ausb1\"]": "educationByType.apprenticeship1.studyType",
+            "input[name=\"firma1\"]": "educationByType.apprenticeship1.institution",
+            "input[name=\"fachricht1\"]": "educationByType.apprenticeship1.area",
+            "input[name=\"anschort1\"]": "educationByType.apprenticeship1.location",
+            "textarea[name=\"zinfo1\"]": "educationByType.apprenticeship1.comment",
+            "input[name=\"ausb2\"]": "educationByType.apprenticeship2.studyType",
+            "input[name=\"firma2\"]": "educationByType.apprenticeship2.institution",
+            "input[name=\"fachricht2\"]": "educationByType.apprenticeship2.area",
+            "input[name=\"anschort2\"]": "educationByType.apprenticeship2.location",
+            "textarea[name=\"zinfo2\"]": "educationByType.apprenticeship2.comment",
         };
+        let educationByType = new Map();
+        this.resume.education.forEach((edu) => {
+            let type = edu.type;
+            educationByType[type] = edu;
+        });
+        console.log(educationByType);
+        this.resume.educationByType = educationByType;
     }
 }
 exports.JobsNintendoDe = JobsNintendoDe;

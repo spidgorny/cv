@@ -5,22 +5,30 @@ export class BasicFiller implements FillerInterface {
 
 	map: object;
 
-	fill(document: Document, resume: JSONResume) {
+	resume: JSONResume;
+
+	constructor(resume: JSONResume) {
+		this.resume = resume;
+	}
+
+	fill(document: Document) {
 		Object.keys(this.map).forEach((selector: string) => {
 			const path = this.map[selector];
-			const value = resume.findDeep(path);
+			const value = this.resume.findDeep(path);
 			console.log(selector, path, value);
-			const el: HTMLInputElement|HTMLSelectElement = <any>document.querySelector(selector);
+			const el: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement = <any>document.querySelector(selector);
 			if (el) {
 				if (el.tagName.toUpperCase() == 'SELECT') {
 					this.fillSelect(<HTMLSelectElement>el,
 						value,
 						Array.isArray(value) ? value : [value]
 					);
+				} else if (el.tagName.toUpperCase() == 'TEXTAREA') {
+					this.fillTextarea(<HTMLTextAreaElement>el, value);
 				} else if (el.type.toUpperCase() == 'CHECKBOX') {
-					this.fillCheckbox(el, value);
+					this.fillCheckbox(<HTMLInputElement>el, value);
 				} else if (el.type.toUpperCase() == 'RADIO') {
-					this.fillRadio(el, value);
+					this.fillRadio(<HTMLInputElement>el, value);
 				} else {
 					el.value = value;
 				}
@@ -45,19 +53,32 @@ export class BasicFiller implements FillerInterface {
 		} else {
 			index = options.indexOf(value);
 		}
-		console.log(options, value, index, options[index]);
+		// console.log(options, value, index, options[index]);
 		if (index >= 0) {
 			el.selectedIndex = index;
 		}
 		return el;
 	}
 
-	fillCheckbox(el, value) {
-
+	fillTextarea(el: HTMLTextAreaElement, value) {
+		el.innerHTML = value;
 	}
 
-	fillRadio(el, value) {
+	fillCheckbox(el: HTMLInputElement, value) {
+		el.checked = value;
+	}
 
+	fillRadio(el: HTMLInputElement, value) {
+		const name = el.name;
+		let sameName = document.getElementsByName(name);
+		sameName = [].slice.call(sameName);
+		console.log(name, sameName, value);
+		const aValue = Array.isArray(value) ? value : [value];
+		sameName.forEach((el: HTMLInputElement) => {
+			if (-1 < aValue.indexOf(el.value.trim())) {
+				el.checked = true;
+			}
+		});
 	}
 
 }

@@ -1,7 +1,9 @@
-import {JSONResume} from "./sites/JSONResume";
+import {JSONResume} from "./JSONResume";
 
 export interface FillerInterface {
 
-	fill(document: Document, resume: JSONResume);
+	constructor(resume: JSONResume);
+
+	fill(document: Document);
 
 }

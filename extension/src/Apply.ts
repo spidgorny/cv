@@ -1,13 +1,13 @@
 // import {FieldConfig} from './FieldConfig';
 
-import {IndeedCom} from "./sites/IndeedCom";
-
 const FieldConfig = require('./FieldConfig').FieldConfig;
+import {IndeedCom} from "./sites/IndeedCom";
 import {FillerInterface} from './FillerInterface';
 import {JSONResume} from "./JSONResume";
 import {OnApplyDe} from "./sites/OnApplyDe";
 import {BMWGroupDe} from "./sites/BMWGroupDe";
 import {JobsNintendoDe} from "./sites/JobsNintendoDe";
+import {DaimlerCom} from "./sites/DaimlerCom";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -27,6 +27,7 @@ export class Apply {
 		'indeed.com': IndeedCom,
 		'bmwgroup.de': BMWGroupDe,
 		'jobs.nintendo.de': JobsNintendoDe,
+		'daimler.com': DaimlerCom,
 	};
 
 	constructor(document) {
@@ -47,7 +48,7 @@ export class Apply {
 	}
 
 	checkForm() {
-		const selectors = this.getSelectors();
+		const selectors = this.getSelectorsFromFrames();
 		if (selectors) {
 			const json = this.zip(selectors, [], '');
 			console.log(JSON.stringify(json, null, 4));
@@ -56,97 +57,17 @@ export class Apply {
 		}
 	}
 
-	getSelectors() {
-		const forms = this.$$('form');
-		let form;
-		if (forms.length == 1) {
-			form = forms[0];
-		} else {
-			form = this.findLargestForm(forms);
-		}
-
-		if (form) {
-			let fields = form.querySelectorAll('input,select,button,textarea');
-			fields = [].slice.call(fields);
-			// console.log(fields);
-			const config = this.extractForm(fields);
-			// console.log(JSON.stringify(config, null, 4));
-			const selectors = config.map((el: FieldConfig) => {
-				return el.selector;
+	getSelectorsFromFrames() {
+		let allSelectors = [];
+		this.document.querySelectorAll('iframe').forEach( item => {
+			let frameDocument = item.contentWindow.document;
+			console.log(frameDocument.querySelectorAll('input'));
+			let df = new DocumentFields(frameDocument);
+			allSelectors.push({
+				iframe: item,
+				selectors: df.getSelectors(),
 			});
-			return selectors;
-		}
-		return null;
-	}
-
-	findLargestForm(forms: HTMLFormElement[]) {
-		const mapLength = forms.map((el) => {
-			return el.querySelectorAll('input,select,button,textarea').length;
 		});
-		const max = Math.max(...mapLength);
-		const maxIndex = mapLength.indexOf(max);
-		return forms[maxIndex];
-	}
-
-	extractForm(fields: HTMLInputElement[]) {
-		let collection = [];
-
-		const allClasses = fields.map(el => {
-			return el.className;
-		});
-		const classFrequency = this.getFrequency(allClasses);
-
-		fields.forEach(field => {
-			let labels = this.getLabels(field);
-			const config = new FieldConfig({
-				'selector': this.getSelector(field, labels, classFrequency),
-				'tagName': field.tagName.toLowerCase(),
-				'type': field.type,
-				'class': field.className,
-				'id': field.id,
-				'labels': labels,
-			});
-			collection.push(config);
-		});
-		return collection;
-	}
-
-	private getLabels(field: HTMLInputElement) {
-		return field.labels
-			? [].slice.call(field.labels).map((el: HTMLLabelElement) => {
-				return el.innerText.trim();
-			}) : null;
-	}
-
-	getSelector(field: HTMLInputElement, labels: string[]|null, classFrequency: string[]) {
-		let selector = field.tagName.toLowerCase();
-		// avoid id with numbers
-		if (field.id && !field.id.match(/[0-9]/)) {
-			selector += '#' + field.id;
-		} else if (field.name && !field.name.match(/[0-9]/)) {
-			selector += '[name="' + field.name + '"]';
-		} else if (field.className && classFrequency[field.className] == 1) {
-			const classes = field.className.split(' ');
-			selector += '.' + classes.join('.');
-		// } else if (labels && labels.length) {
-		// 	selector = 'label:contains("'+labels[0]+'") '+selector;
-		} else if (field.name) {		// again with numbers
-			selector += '[name="' + field.name + '"]';
-		} else if (field.id) {			// again with numbers
-			selector += '#' + field.id;
-		} else if (field.type) {
-			selector += '[type="' + field.type + '"]';
-		}
-		return selector;
-	}
-
-	public getFrequency(array: Array<any>) {
-		return array.reduce(this.countDuplicates, {});
-	}
-
-	protected countDuplicates(obj, num) {
-		obj[num] = (++obj[num] || 1);
-		return obj;
 	}
 
 	messageHandler(request, sender, sendResponse) {
@@ -172,7 +93,7 @@ export class Apply {
 		const filler = this.getFiller(document.location.host);
 		console.log(filler);
 		if (filler) {
-			filler.fill(document, this.resume);
+			filler.fill(document);
 		} else {
 			console.log("we don't know how to fill ", document.location.host);
 		}
@@ -199,7 +120,7 @@ export class Apply {
 
 			// filler = Object.create(className);
 
-			filler = new className();
+			filler = new className(this.resume);
 		}
 		return filler;
 	}
