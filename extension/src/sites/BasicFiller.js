@@ -11,6 +11,12 @@ class BasicFiller {
                 if (el.tagName.toUpperCase() == 'SELECT') {
                     this.fillSelect(el, value, Array.isArray(value) ? value : [value]);
                 }
+                else if (el.type.toUpperCase() == 'CHECKBOX') {
+                    this.fillCheckbox(el, value);
+                }
+                else if (el.type.toUpperCase() == 'RADIO') {
+                    this.fillRadio(el, value);
+                }
                 else {
                     el.value = value;
                 }
@@ -21,16 +27,29 @@ class BasicFiller {
         const options = [].slice.call(el.options).map((el) => {
             return el.innerHTML.trim();
         });
-        // values.reduce((acc, el) => {
-        // 	if (acc > -1) {
-        // 	let index = options.indexOf(valueItem);
-        // }, -1);
-        let index = options.indexOf(value);
-        console.log(options, value, index);
+        let index;
+        if (values.length) {
+            index = values.reduce((acc, el) => {
+                if (acc > -1) {
+                    return acc;
+                }
+                else {
+                    return options.indexOf(el);
+                }
+            }, -1);
+        }
+        else {
+            index = options.indexOf(value);
+        }
+        console.log(options, value, index, options[index]);
         if (index >= 0) {
             el.selectedIndex = index;
         }
         return el;
+    }
+    fillCheckbox(el, value) {
+    }
+    fillRadio(el, value) {
     }
 }
 exports.BasicFiller = BasicFiller;

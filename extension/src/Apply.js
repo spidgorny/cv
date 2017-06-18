@@ -6,6 +6,7 @@ const FieldConfig = require('./FieldConfig').FieldConfig;
 const JSONResume_1 = require("./JSONResume");
 const OnApplyDe_1 = require("./sites/OnApplyDe");
 const BMWGroupDe_1 = require("./sites/BMWGroupDe");
+const JobsNintendoDe_1 = require("./sites/JobsNintendoDe");
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
 class Apply {
@@ -14,6 +15,7 @@ class Apply {
             'onapply.de': OnApplyDe_1.OnApplyDe,
             'indeed.com': IndeedCom_1.IndeedCom,
             'bmwgroup.de': BMWGroupDe_1.BMWGroupDe,
+            'jobs.nintendo.de': JobsNintendoDe_1.JobsNintendoDe,
         };
         this.document = document;
         this.$ = this.document.querySelector.bind(this.document);

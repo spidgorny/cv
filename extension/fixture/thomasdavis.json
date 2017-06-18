@@ -15,7 +15,7 @@
 		"fax": "fax?",
 		"username": "sir-thomas-davis",
 		"password": "password",
-		"preferredContact": ["E-mail", "e-mail"],
+		"preferredContact": ["E-mail", "e-mail", "E-Mail"],
 		"location": {
 			"street": "Some nice street 15",
 			"zip": "32145",

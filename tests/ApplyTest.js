@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const BasicFiller_1 = require("../extension/src/sites/BasicFiller");
 const deepEqual = require('deep-equal');
 const jsdom = require('jsdom');
 // import {App_ly} from "../extension/src/Apply";
@@ -47,4 +50,19 @@ describe('zip test with default', () => {
     let must = { a: 'a', b: 'b', c: 'default' };
     console.log(zip, must);
     console.log(deepEqual(zip, must) ? 'ok' : 'fail');
+});
+describe('BasicFilter->fillSelect', () => {
+    const bs = new BasicFiller_1.BasicFiller();
+    let selTag;
+    (function (document) {
+        console.log(document);
+        let { select, option } = require("docrel");
+        selTag = select.call(document, {}, [
+            option('Madam'),
+            option('Herr'),
+            option('3'),
+        ]);
+    })(dom.window.document);
+    const res = bs.fillSelect(selTag, 'Herr');
+    console.log(res);
 });

@@ -7,6 +7,7 @@ import {FillerInterface} from './FillerInterface';
 import {JSONResume} from "./JSONResume";
 import {OnApplyDe} from "./sites/OnApplyDe";
 import {BMWGroupDe} from "./sites/BMWGroupDe";
+import {JobsNintendoDe} from "./sites/JobsNintendoDe";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -25,6 +26,7 @@ export class Apply {
 		'onapply.de': OnApplyDe,
 		'indeed.com': IndeedCom,
 		'bmwgroup.de': BMWGroupDe,
+		'jobs.nintendo.de': JobsNintendoDe,
 	};
 
 	constructor(document) {

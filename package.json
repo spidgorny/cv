@@ -19,6 +19,7 @@
   "homepage": "https://github.com/spidgorny/cv#readme",
   "dependencies": {
     "deep-equal": "^1.0.1",
+    "docrel": "^1.4.3",
     "jsdom": "^11.0.0",
     "linkedin-scraper2": "*"
   }

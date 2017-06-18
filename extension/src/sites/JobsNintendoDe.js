@@ -8,7 +8,7 @@ class JobsNintendoDe extends BasicFiller_1.BasicFiller {
     constructor() {
         super(...arguments);
         this.map = {
-            "input[name=\"anschreib\"]": "coverLetter",
+            "input[name=\"bem\"]": "coverLetter",
             "select[name=\"kontakt\"]": "basics.preferredContact",
             "input[name=\"geschl\"]": "basics.anrede",
             "select[name=\"titel\"]": "basics.title",
@@ -18,10 +18,10 @@ class JobsNintendoDe extends BasicFiller_1.BasicFiller {
             "input[name=\"anschplz\"]": "basics.location.zip",
             "input[name=\"anschort\"]": "basics.location.city",
             "select[name=\"anschland\"]": "basics.location.country",
-            "input[name=\"telefon1\"]": "basics.location.phone",
-            "input[name=\"telefon2\"]": "basics.location.phone2",
-            "input[name=\"telefax\"]": "basics.location.fax",
-            "input[name=\"email\"]": "basics.location.email",
+            "input[name=\"telefon1\"]": "basics.phone",
+            "input[name=\"telefon2\"]": "basics.phone2",
+            "input[name=\"telefax\"]": "basics.fax",
+            "input[name=\"email\"]": "basics.email",
         };
     }
 }
