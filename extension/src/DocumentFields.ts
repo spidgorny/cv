@@ -1,4 +1,6 @@
-class DocumentFields {
+
+
+export class DocumentFields {
 
 	document: Document;
 

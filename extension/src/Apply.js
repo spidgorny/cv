@@ -8,6 +8,7 @@ const OnApplyDe_1 = require("./sites/OnApplyDe");
 const BMWGroupDe_1 = require("./sites/BMWGroupDe");
 const JobsNintendoDe_1 = require("./sites/JobsNintendoDe");
 const DaimlerCom_1 = require("./sites/DaimlerCom");
+const DocumentFields_1 = require("./DocumentFields");
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
 class Apply {
@@ -47,12 +48,21 @@ class Apply {
         this.document.querySelectorAll('iframe').forEach(item => {
             let frameDocument = item.contentWindow.document;
             console.log(frameDocument.querySelectorAll('input'));
-            let df = new DocumentFields(frameDocument);
+            let df = new DocumentFields_1.DocumentFields(frameDocument);
             allSelectors.push({
                 iframe: item,
                 selectors: df.getSelectors(),
             });
         });
+        return allSelectors;
+    }
+    getSelectors() {
+        const allSelectors = this.getSelectorsFromFrames();
+        const merged = [];
+        allSelectors.forEach((el) => {
+            merged.concat(el.selectors);
+        });
+        return merged;
     }
     messageHandler(request, sender, sendResponse) {
         // console.log(sender.tab ?

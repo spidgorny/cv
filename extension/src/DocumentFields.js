@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class DocumentFields {
     constructor(document) {
         this.document = document;
@@ -101,3 +103,4 @@ class DocumentFields {
         return obj;
     }
 }
+exports.DocumentFields = DocumentFields;

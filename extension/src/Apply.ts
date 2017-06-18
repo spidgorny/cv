@@ -8,6 +8,7 @@ import {OnApplyDe} from "./sites/OnApplyDe";
 import {BMWGroupDe} from "./sites/BMWGroupDe";
 import {JobsNintendoDe} from "./sites/JobsNintendoDe";
 import {DaimlerCom} from "./sites/DaimlerCom";
+import {DocumentFields} from "./DocumentFields";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -68,6 +69,16 @@ export class Apply {
 				selectors: df.getSelectors(),
 			});
 		});
+		return allSelectors;
+	}
+
+	getSelectors() {
+		const allSelectors = this.getSelectorsFromFrames();
+		const merged = [];
+		allSelectors.forEach((el) => {
+			merged.concat(el.selectors);
+		});
+		return merged;
 	}
 
 	messageHandler(request, sender, sendResponse) {
