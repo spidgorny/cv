@@ -11,6 +11,6 @@ export class IndeedCom extends BasicFiller implements FillerInterface {
 		'input#applicant.name': 'basics.name',
 		'input#applicant.email': 'basics.email',
 		'input#applicant.phoneNumber': 'basics.phone',
-	}
+	};
 
 }

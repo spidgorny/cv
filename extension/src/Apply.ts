@@ -1,5 +1,3 @@
-
-// const FieldConfig = require('./FieldConfig').FieldConfig;
 import {IndeedCom} from "./sites/IndeedCom";
 import {FillerInterface} from './FillerInterface';
 import {JSONResume} from "./JSONResume";
@@ -8,6 +6,7 @@ import {BMWGroupDe} from "./sites/BMWGroupDe";
 import {JobsNintendoDe} from "./sites/JobsNintendoDe";
 import {DaimlerCom} from "./sites/DaimlerCom";
 import {DocumentFields} from "./DocumentFields";
+import {TaleoNet} from "./sites/TaleoNet";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -28,6 +27,7 @@ export class Apply {
 		'bmwgroup.de': BMWGroupDe,
 		'jobs.nintendo.de': JobsNintendoDe,
 		'daimler.com': DaimlerCom,
+		'taleo.net': TaleoNet,
 	};
 
 	constructor(document) {
@@ -41,7 +41,7 @@ export class Apply {
 
 		if (isBrowser) {
 			chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
-			window.apply = this;
+			window['apply'] = this;
 		}
 
 		this.resume = new JSONResume(require('./../fixture/thomasdavis.json'));
@@ -49,10 +49,21 @@ export class Apply {
 	}
 
 	checkForm() {
-		const selectors = this.getSelectorsFromFrames();
+		const selectors = this.getSelectors();
 		if (selectors) {
-			const json = this.zip(selectors, [], '');
-			console.log(JSON.stringify(json, null, 4));
+			console.log('selectors', selectors.length);
+			const json = this.zipMap(selectors, (selector) => {
+				try {
+					return this.$(selector);
+				} catch (e) {
+					if (e instanceof DOMException) {
+					} else {
+						throw e;
+					}
+				}
+			}, '');
+			console.log(json);
+			//console.log(JSON.stringify(json, null, 4));
 		} else {
 			console.log('no forms on this page');
 		}
@@ -60,12 +71,15 @@ export class Apply {
 
 	getSelectorsFromFrames() {
 		let allSelectors = [];
-		this.document.querySelectorAll('iframe').forEach( item => {
-			let frameDocument = item.contentWindow.document;
-			console.log(frameDocument.querySelectorAll('input'));
+		let allFrames = this.$$('iframe').map((item) => {
+			return item.contentWindow.document;
+		});
+		allFrames.unshift(this.document);	// if there are no iframes
+		allFrames.forEach(frameDocument => {
+			//console.log('frameDocument->input', frameDocument.querySelectorAll('input'));
 			let df = new DocumentFields(frameDocument);
 			allSelectors.push({
-				iframe: item,
+				iframe: frameDocument,
 				selectors: df.getSelectors(),
 			});
 		});
@@ -74,9 +88,13 @@ export class Apply {
 
 	getSelectors() {
 		const allSelectors = this.getSelectorsFromFrames();
-		const merged = [];
-		allSelectors.forEach((el) => {
-			merged.concat(el.selectors);
+		console.log('allSelectors', allSelectors.length);
+		let merged = [];
+		allSelectors.forEach((el, idx) => {
+			// console.log(el);
+			console.log('frame', idx, 'concat', el.selectors.length);
+			merged = merged.concat(el.selectors);
+			console.log('merged', merged.length);
 		});
 		return merged;
 	}
@@ -86,21 +104,20 @@ export class Apply {
 		// 	"from a content script:" + sender.tab.url :
 		// 	"from the extension");
 
-		this.clickIcon(request);
-
-		sendResponse({});
+		switch(request.action) {
+			case 'clickIcon':
+				this.clickIcon(request, sendResponse);
+				break;
+			case 'showSelectors':
+				this.showSelectors(request, sendResponse);
+				break;
+		}
 	}
 
-	clickIcon(request) {
+	clickIcon(request: any, done: Function) {
 		console.log('request', request);
 		const selectors = this.getSelectors();
-		const values = selectors.map(selector => {
-			const el = this.$(selector);
-			return el.selectedIndex ? el.options[el.value].value : el.value;
-		});
-		const zip = this.zip(selectors, values);
-		console.log(zip);
-
+		// this.dumpSelectorValues(selectors);
 		const filler = this.getFiller(document.location.host);
 		console.log(filler);
 		if (filler) {
@@ -108,11 +125,55 @@ export class Apply {
 		} else {
 			console.log("we don't know how to fill ", document.location.host);
 		}
+		done();
 	}
 
-	public zip(selectors: string[], values: any[], defaultV = undefined) {
+	dumpSelectorValues(selectors: string[]) {
+		const values = selectors.map(selector => {
+			try {
+				const el = this.$(selector);
+				if (el) {
+					if ('selectedIndex' in el) {
+						let option = el.options[el.selectedIndex];
+						if (option) {
+							return option.value;
+						}
+					} else {
+						return el.value;
+					}
+				}
+			} catch (e) {
+				if (e instanceof DOMException) {
+				} else {
+					throw e;
+				}
+			}
+		});
+		const zip = this.zip(selectors, values);
+		console.log(zip);
+	}
+
+	public zip(selectors: string[], values: any[]|Function, defaultV = undefined) {
 		const zip = {};
-		selectors.forEach((key, idx) => zip[key] = idx in values ? values[idx] : defaultV);
+		selectors.forEach((key, idx) => {
+			if (typeof values == 'function') {
+				zip[key] = values(key, idx);
+			} else {
+				zip[key] = idx in values ? values[idx] : defaultV;
+			}
+		});
+		return zip;
+	}
+
+	public zipMap(selectors: string[], values: any[]|Function, defaultV = undefined) {
+		const zip = new Map();
+		selectors.forEach((key, idx) => {
+			if (typeof values == 'function') {
+				zip[key] = values(key, idx);
+			} else {
+				zip[key] = idx in values ? values[idx] : defaultV;
+			}
+		});
 		return zip;
 	}
 
@@ -134,6 +195,24 @@ export class Apply {
 			filler = new className(this.resume);
 		}
 		return filler;
+	}
+
+	showSelectors(request, done: Function) {
+		const selectors = this.getSelectors();
+		selectors.map(selector => {
+			try {
+				const el = this.$(selector);
+				if (el && !el.value) {
+					el.value = selector;
+				}
+			} catch (e) {
+				if (e instanceof DOMException) {
+				} else {
+					throw e;
+				}
+			}
+		});
+		done();
 	}
 
 }

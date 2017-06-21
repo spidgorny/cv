@@ -48,6 +48,16 @@ export declare class JSONResumeEducation {
 	degree: string;
 }
 
+export declare class JSONResumeWork {
+	highlights: string;
+	summary: string;
+	website: string;
+	company: string;
+	position: string;
+	startDate: string;
+	endDate: string;
+}
+
 export class JSONResume {
 
 	basics: JSONResumeBasics;
@@ -60,6 +70,8 @@ export class JSONResume {
 	 * optional, @see JobsNintendoDe
 	 */
 	educationByType: Map<string, JSONResumeEducation>;
+
+	work: JSONResumeWork[];
 
 	constructor(props: any) {
 		Object.assign(this, props);

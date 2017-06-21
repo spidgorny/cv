@@ -9,6 +9,7 @@
 		"default_icon": "img/icon.png"
 	},
 	"background": {
+		"persistent": false,
 		"scripts": ["src/background_apply.min.js"]
 	},
 
@@ -16,7 +17,8 @@
 		"activeTab",
 		"tabs",
 		"http://*/*",
-		"https://*/*"
+		"https://*/*",
+		"contextMenus"
 	],
 	"content_scripts": [
 		{

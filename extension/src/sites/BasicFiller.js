@@ -34,7 +34,7 @@ class BasicFiller {
             return el.innerHTML.trim();
         });
         let index;
-        if (values.length) {
+        if (values && values.length) {
             index = values.reduce((acc, el) => {
                 if (acc > -1) {
                     return acc;
@@ -47,7 +47,7 @@ class BasicFiller {
         else {
             index = options.indexOf(value);
         }
-        // console.log(options, value, index, options[index]);
+        console.log(options, value, index, options[index]);
         if (index >= 0) {
             el.selectedIndex = index;
         }

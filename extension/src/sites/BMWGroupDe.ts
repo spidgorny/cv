@@ -2,7 +2,7 @@ import {BasicFiller} from './BasicFiller';
 import {FillerInterface} from "../FillerInterface";
 
 /**
- * @see 
+ * @see
  */
 export class BMWGroupDe extends BasicFiller implements FillerInterface {
 
@@ -15,6 +15,6 @@ export class BMWGroupDe extends BasicFiller implements FillerInterface {
 		"input#passwortwiederholung": "basics.password",
 		"input#email": "basics.email",
 		"input#emailwiederholung": "basics.email",
-	}
+	};
 
 }

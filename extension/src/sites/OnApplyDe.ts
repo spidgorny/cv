@@ -12,6 +12,6 @@ export class OnApplyDe extends BasicFiller implements FillerInterface {
 		'input#applicationform-lastname': 'basics.lastName',
 		'input#applicationform-email': 'basics.email',
 		'input#applicationform-phonenumber': 'basics.phone',
-	}
+	};
 
 }
