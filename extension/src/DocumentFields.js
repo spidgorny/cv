@@ -34,7 +34,7 @@ class DocumentFields {
             });
             return selectors;
         }
-        return null;
+        return [];
     }
     findLargestForm(forms) {
         const mapLength = forms.map((el) => {

@@ -7,6 +7,8 @@ import {JobsNintendoDe} from "./sites/JobsNintendoDe";
 import {DaimlerCom} from "./sites/DaimlerCom";
 import {DocumentFields} from "./DocumentFields";
 import {TaleoNet} from "./sites/TaleoNet";
+import {GoogleCom} from "./sites/GoogleCom";
+import {isNull} from "util";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -28,6 +30,7 @@ export class Apply {
 		'jobs.nintendo.de': JobsNintendoDe,
 		'daimler.com': DaimlerCom,
 		'taleo.net': TaleoNet,
+		'google.com': GoogleCom,
 	};
 
 	constructor(document) {
@@ -71,10 +74,22 @@ export class Apply {
 
 	getSelectorsFromFrames() {
 		let allSelectors = [];
-		let allFrames = this.$$('iframe').map((item) => {
-			return item.contentWindow.document;
+		let allFrames = [];
+		allFrames = this.$$('iframe').map((item) => {
+			let doc = null;
+			// Error in event handler for runtime.onMessage: SecurityError: Blocked a frame with origin
+			try {
+				doc = item.contentWindow.document;
+			} catch (e) {
+				// ignore
+			}
+			return doc;
+		});
+		allFrames = allFrames.filter(el => {
+			return !isNull(el);	// remove empty due to the
 		});
 		allFrames.unshift(this.document);	// if there are no iframes
+		console.log('frames', allFrames.length);
 		allFrames.forEach(frameDocument => {
 			//console.log('frameDocument->input', frameDocument.querySelectorAll('input'));
 			let df = new DocumentFields(frameDocument);

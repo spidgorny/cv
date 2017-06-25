@@ -38,13 +38,7 @@ class JobsNintendoDe extends BasicFiller_1.BasicFiller {
             "input[name=\"anschort2\"]": "educationByType.apprenticeship2.location",
             "textarea[name=\"zinfo2\"]": "educationByType.apprenticeship2.comment",
         };
-        let educationByType = new Map();
-        this.resume.education.forEach((edu) => {
-            let type = edu.type;
-            educationByType[type] = edu;
-        });
-        console.log(educationByType);
-        this.resume.educationByType = educationByType;
+        this.resume.setEducationByType();
     }
 }
 exports.JobsNintendoDe = JobsNintendoDe;

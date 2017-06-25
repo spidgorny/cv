@@ -9,5 +9,14 @@ class JSONResume {
         path.split('.').forEach((p) => { current = current[p]; });
         return current;
     }
+    setEducationByType() {
+        let educationByType = new Map();
+        this.education.forEach((edu) => {
+            let type = edu.type;
+            educationByType[type] = edu;
+        });
+        console.log(educationByType);
+        this.educationByType = educationByType;
+    }
 }
 exports.JSONResume = JSONResume;

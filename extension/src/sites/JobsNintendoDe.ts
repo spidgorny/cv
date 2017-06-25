@@ -45,13 +45,7 @@ export class JobsNintendoDe extends BasicFiller implements FillerInterface {
 
 	constructor(resume: JSONResume) {
 		super(resume);
-		let educationByType = new Map();
-		this.resume.education.forEach((edu) => {
-			let type = edu.type;
-			educationByType[type] = edu;
-		});
-		console.log(educationByType);
-		this.resume.educationByType = educationByType;
+		this.resume.setEducationByType();
 	}
 
 }

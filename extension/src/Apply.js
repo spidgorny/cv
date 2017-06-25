@@ -8,6 +8,8 @@ const JobsNintendoDe_1 = require("./sites/JobsNintendoDe");
 const DaimlerCom_1 = require("./sites/DaimlerCom");
 const DocumentFields_1 = require("./DocumentFields");
 const TaleoNet_1 = require("./sites/TaleoNet");
+const GoogleCom_1 = require("./sites/GoogleCom");
+const util_1 = require("util");
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
 class Apply {
@@ -19,6 +21,7 @@ class Apply {
             'jobs.nintendo.de': JobsNintendoDe_1.JobsNintendoDe,
             'daimler.com': DaimlerCom_1.DaimlerCom,
             'taleo.net': TaleoNet_1.TaleoNet,
+            'google.com': GoogleCom_1.GoogleCom,
         };
         this.document = document;
         this.$ = this.document.querySelector.bind(this.document);
@@ -59,10 +62,23 @@ class Apply {
     }
     getSelectorsFromFrames() {
         let allSelectors = [];
-        let allFrames = this.$$('iframe').map((item) => {
-            return item.contentWindow.document;
+        let allFrames = [];
+        allFrames = this.$$('iframe').map((item) => {
+            let doc = null;
+            // Error in event handler for runtime.onMessage: SecurityError: Blocked a frame with origin
+            try {
+                doc = item.contentWindow.document;
+            }
+            catch (e) {
+                // ignore
+            }
+            return doc;
+        });
+        allFrames = allFrames.filter(el => {
+            return !util_1.isNull(el); // remove empty due to the
         });
         allFrames.unshift(this.document); // if there are no iframes
+        console.log('frames', allFrames.length);
         allFrames.forEach(frameDocument => {
             //console.log('frameDocument->input', frameDocument.querySelectorAll('input'));
             let df = new DocumentFields_1.DocumentFields(frameDocument);

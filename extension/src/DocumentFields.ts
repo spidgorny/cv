@@ -40,7 +40,7 @@ export class DocumentFields {
 			});
 			return selectors;
 		}
-		return null;
+		return [];
 	}
 
 	findLargestForm(forms: HTMLFormElement[]) {

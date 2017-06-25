@@ -9,8 +9,8 @@
 		"summary": "I’m a full stack web developer who loves working with open source technology. I work best at planning the architecture of web  applications and their development life cycles. I also love to get the community involved and have had much experience with building and organizing large open source groups.",
 		"email": "slapidya@yahoo.com",
 		"website": "https://github.com/spidgorny",
-		"phone": "+49",
-		"phone2": "+49",
+		"phone": "+49 1321 654987",
+		"phone2": "+49 654 987 654",
 		"fax": "fax?",
 		"username": "slawa.jobsucher",
 		"password": "5nQ4AN9sgdP",
@@ -26,7 +26,7 @@
 		"contactLanguage": "English",
 		"location": {
 			"street": "Upon request",
-			"zip": "60435",
+			"zip": "12345",
 			"city": "Frankfurt am Main",
 			"countryCode": "DE",
 			"country": "Germany",
@@ -82,8 +82,9 @@
 			"endDate": "2009-12-12",
 			"startDate": "2008-02-12",
 			"area": "Software Engineering (incomplete)",
-			"studyType": "Bachelors",
-			"institution": "The University of Queensland"
+			"studyType": ["Bachelors", "Bachelor of Computer Science"],
+			"institution": "The University of Queensland",
+			"country": "Australia"
 		},
 		{
 			"type": "education2",

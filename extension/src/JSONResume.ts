@@ -83,4 +83,14 @@ export class JSONResume {
 		return <any>current;
 	}
 
+	setEducationByType() {
+		let educationByType = new Map();
+		this.education.forEach((edu) => {
+			let type = edu.type;
+			educationByType[type] = edu;
+		});
+		console.log(educationByType);
+		this.educationByType = educationByType;
+	}
+
 }
