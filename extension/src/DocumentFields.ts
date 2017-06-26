@@ -1,5 +1,9 @@
 import {FieldConfig} from './FieldConfig';
 
+declare interface HTMLInputElementWithLabels extends HTMLInputElement {
+	labels: HTMLLabelElement[];
+}
+
 export class DocumentFields {
 
 	document: Document;
@@ -23,8 +27,8 @@ export class DocumentFields {
 		let form;
 		if (forms.length == 1) {
 			form = forms[0];
-		} else if (forms.length = 0) {	// DaimlerCom
-			form = this.document;
+		} else if (forms.length == 0) {	// DaimlerCom
+			form = this.document;	// search all <inputs>
 		} else {
 			form = this.findLargestForm(forms);
 		}
@@ -32,13 +36,15 @@ export class DocumentFields {
 		if (form) {
 			let fields = form.querySelectorAll('input,select,button,textarea');
 			fields = [].slice.call(fields);
-			// console.log(fields);
+			console.log(form, fields);
 			const config = this.extractForm(fields);
 			// console.log(JSON.stringify(config, null, 4));
 			const selectors = config.map((el: FieldConfig) => {
 				return el.selector;
 			});
 			return selectors;
+		} else {
+			console.log('there are no forms');
 		}
 		return [];
 	}
@@ -60,7 +66,7 @@ export class DocumentFields {
 		});
 		const classFrequency = this.getFrequency(allClasses);
 
-		fields.forEach(field => {
+		fields.forEach((field: HTMLInputElementWithLabels) => {
 			let labels = this.getLabels(field);
 			const config = new FieldConfig({
 				'selector': this.getSelector(field, labels, classFrequency),
@@ -75,7 +81,7 @@ export class DocumentFields {
 		return collection;
 	}
 
-	private getLabels(field: HTMLInputElement) {
+	private getLabels(field: HTMLInputElementWithLabels) {
 		return field.labels
 			? [].slice.call(field.labels).map((el: HTMLLabelElement) => {
 				return el.innerText.trim();

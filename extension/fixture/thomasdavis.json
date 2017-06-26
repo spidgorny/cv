@@ -18,18 +18,22 @@
 		"birthDate": {
 			"us": "06/18/2017",
 			"eu": "18.06.2017",
-			"iso": "2017-06-16"
+			"iso": "2017-06-16",
+			"day": "20",
+			"month": ["10", "February", "Februar"],
+			"year": "1979"
 		},
 		"birthPlace": "Kiev, Ukraine",
-		"nationality": ["Germany", "Russia", "New Zealand"],
+		"nationality": ["Germany", "Russia", "New Zealand", "Deutschland"],
 		"legalRepresentative": "Mother",
 		"contactLanguage": "English",
+		"disability": "Keine Behinderung",
 		"location": {
 			"street": "Upon request",
 			"zip": "12345",
 			"city": "Frankfurt am Main",
 			"countryCode": "DE",
-			"country": "Germany",
+			"country": ["Germany", "Deutschland"],
 			"address2": "",
 			"region": "Hessen"
 		},
@@ -145,7 +149,13 @@
 			"company": "Listium",
 			"position": "Developer",
 			"startDate": "2016-01-01",
-			"endDate": "2017-06-20"
+			"startMonth": ["Januar"],
+			"startYear": "2006",
+			"endDate": "2017-06-20",
+			"endMonth": ["Januar"],
+			"endYear": "2017",
+			"city": "Berlin",
+			"country": ["Deutschland"]
 		},
 		{
 			"highlights": [

@@ -17,8 +17,8 @@ class DocumentFields {
         if (forms.length == 1) {
             form = forms[0];
         }
-        else if (forms.length = 0) {
-            form = this.document;
+        else if (forms.length == 0) {
+            form = this.document; // search all <inputs>
         }
         else {
             form = this.findLargestForm(forms);
@@ -26,13 +26,16 @@ class DocumentFields {
         if (form) {
             let fields = form.querySelectorAll('input,select,button,textarea');
             fields = [].slice.call(fields);
-            // console.log(fields);
+            console.log(form, fields);
             const config = this.extractForm(fields);
             // console.log(JSON.stringify(config, null, 4));
             const selectors = config.map((el) => {
                 return el.selector;
             });
             return selectors;
+        }
+        else {
+            console.log('there are no forms');
         }
         return [];
     }
@@ -50,7 +53,7 @@ class DocumentFields {
             return el.className;
         });
         const classFrequency = this.getFrequency(allClasses);
-        fields.forEach(field => {
+        fields.forEach((field) => {
             let labels = this.getLabels(field);
             const config = new FieldConfig_1.FieldConfig({
                 'selector': this.getSelector(field, labels, classFrequency),

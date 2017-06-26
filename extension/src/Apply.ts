@@ -9,6 +9,7 @@ import {DocumentFields} from "./DocumentFields";
 import {TaleoNet} from "./sites/TaleoNet";
 import {GoogleCom} from "./sites/GoogleCom";
 import {isNull} from "util";
+import {VolkswagenDe} from "./sites/VolkswagenDe";
 
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
@@ -31,6 +32,7 @@ export class Apply {
 		'daimler.com': DaimlerCom,
 		'taleo.net': TaleoNet,
 		'google.com': GoogleCom,
+		'volkswagen.de': VolkswagenDe,
 	};
 
 	constructor(document) {
@@ -44,7 +46,8 @@ export class Apply {
 
 		if (isBrowser) {
 			chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
-			window['apply'] = this;
+			document.defaultView['apply'] = this;
+			document['apply'] = this;
 		}
 
 		this.resume = new JSONResume(require('./../fixture/thomasdavis.json'));
@@ -94,6 +97,7 @@ export class Apply {
 			//console.log('frameDocument->input', frameDocument.querySelectorAll('input'));
 			let df = new DocumentFields(frameDocument);
 			allSelectors.push({
+				df: df,
 				iframe: frameDocument,
 				selectors: df.getSelectors(),
 			});
@@ -106,7 +110,10 @@ export class Apply {
 		console.log('allSelectors', allSelectors.length);
 		let merged = [];
 		allSelectors.forEach((el, idx) => {
-			// console.log(el);
+			if (!el.selectors.length) {	// executed too early before AJAX loaded <form>
+				el.selectors = el.df.getSelectors();
+			}
+			console.log(el.iframe, el.selectors);
 			console.log('frame', idx, 'concat', el.selectors.length);
 			merged = merged.concat(el.selectors);
 			console.log('merged', merged.length);
@@ -219,6 +226,12 @@ export class Apply {
 				const el = this.$(selector);
 				if (el && !el.value) {
 					el.value = selector;
+					if (el instanceof HTMLSelectElement) {
+						const optionName = document.createElement('option');
+						optionName.innerHTML = selector;
+						el.options.add(optionName);
+						el.selectedIndex = el.options.length - 1;
+					}
 				}
 			} catch (e) {
 				if (e instanceof DOMException) {

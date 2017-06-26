@@ -10,6 +10,7 @@ const DocumentFields_1 = require("./DocumentFields");
 const TaleoNet_1 = require("./sites/TaleoNet");
 const GoogleCom_1 = require("./sites/GoogleCom");
 const util_1 = require("util");
+const VolkswagenDe_1 = require("./sites/VolkswagenDe");
 // const isBrowser = this.window === this;
 const isBrowser = typeof window == 'object' && window.toString() == "[object Window]";
 class Apply {
@@ -22,6 +23,7 @@ class Apply {
             'daimler.com': DaimlerCom_1.DaimlerCom,
             'taleo.net': TaleoNet_1.TaleoNet,
             'google.com': GoogleCom_1.GoogleCom,
+            'volkswagen.de': VolkswagenDe_1.VolkswagenDe,
         };
         this.document = document;
         this.$ = this.document.querySelector.bind(this.document);
@@ -32,7 +34,8 @@ class Apply {
         };
         if (isBrowser) {
             chrome.runtime.onMessage.addListener(this.messageHandler.bind(this));
-            window['apply'] = this;
+            document.defaultView['apply'] = this;
+            document['apply'] = this;
         }
         this.resume = new JSONResume_1.JSONResume(require('./../fixture/thomasdavis.json'));
         // console.log(this.resume);
@@ -83,6 +86,7 @@ class Apply {
             //console.log('frameDocument->input', frameDocument.querySelectorAll('input'));
             let df = new DocumentFields_1.DocumentFields(frameDocument);
             allSelectors.push({
+                df: df,
                 iframe: frameDocument,
                 selectors: df.getSelectors(),
             });
@@ -94,7 +98,10 @@ class Apply {
         console.log('allSelectors', allSelectors.length);
         let merged = [];
         allSelectors.forEach((el, idx) => {
-            // console.log(el);
+            if (!el.selectors.length) {
+                el.selectors = el.df.getSelectors();
+            }
+            console.log(el.iframe, el.selectors);
             console.log('frame', idx, 'concat', el.selectors.length);
             merged = merged.concat(el.selectors);
             console.log('merged', merged.length);
@@ -201,6 +208,12 @@ class Apply {
                 const el = this.$(selector);
                 if (el && !el.value) {
                     el.value = selector;
+                    if (el instanceof HTMLSelectElement) {
+                        const optionName = document.createElement('option');
+                        optionName.innerHTML = selector;
+                        el.options.add(optionName);
+                        el.selectedIndex = el.options.length - 1;
+                    }
                 }
             }
             catch (e) {
