@@ -10,7 +10,7 @@
 	},
 	"background": {
 		"persistent": false,
-		"scripts": ["src/background_apply.min.js"]
+		"scripts": ["background_apply.min.js"]
 	},
 
 	"permissions": [
@@ -23,7 +23,7 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*"],
-			"js": ["src/content_apply.min.js"],
+			"js": ["content_apply.min.js"],
 			"all_frames": true
 		}
 	]

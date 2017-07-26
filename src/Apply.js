@@ -37,7 +37,7 @@ class Apply {
             document.defaultView['apply'] = this;
             document['apply'] = this;
         }
-        this.resume = new JSONResume_1.JSONResume(require('./../fixture/thomasdavis.json'));
+        this.resume = new JSONResume_1.JSONResume(require('../extension/fixture/thomasdavis.json'));
         // console.log(this.resume);
     }
     checkForm() {

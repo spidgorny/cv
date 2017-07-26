@@ -29,7 +29,15 @@ export class BackgroundApply {
 			title: "Show Selectors",
 			//onclick: this.menuItemShowSelectors.bind(this)
 		});
-		chrome.contextMenus.onClicked.addListener(this.menuItemShowSelectors.bind(this));
+
+		chrome.contextMenus.create({
+			id: 'saveJob',
+			contexts: [
+				"browser_action",
+			],
+			title: "Save This Job",
+		});
+		chrome.contextMenus.onClicked.addListener(this.menuItemClickDispatch.bind(this));
 	}
 
 	clickIcon() {
@@ -44,12 +52,21 @@ export class BackgroundApply {
 		});
 	}
 
-
 	resultOfClick(response) {
 		console.log('resultOfClick', response);
 	}
 
-	menuItemShowSelectors() {
+	menuItemClickDispatch(event) {
+		console.log(event.menuItemId);
+		if (this[event.menuItemId]) {
+			this[event.menuItemId]();
+		}
+	}
+
+	/**
+	 * Menu item
+	 */
+	showSelectors() {
 		console.log('menuItemShowSelectors');
 		chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
 			console.log('tabs', tabs);
@@ -57,6 +74,20 @@ export class BackgroundApply {
 				chrome.tabs.sendMessage(tabs[0].id, {
 					action: 'showSelectors'
 				}, this.resultOfClick.bind(this));
+			}
+		});
+	}
+
+	/**
+	 * Menu item
+	 */
+	saveJob() {
+		chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+			console.log('tabs', tabs);
+			if (tabs.length) {
+				console.log(tabs[0]);
+				let newURL = 'http://localhost/slawa/dev-jobz/htdocs/SaveJob?link=' + encodeURIComponent(tabs[0].url);
+				chrome.tabs.create({url: newURL});
 			}
 		});
 	}

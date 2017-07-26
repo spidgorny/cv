@@ -4,7 +4,9 @@
   "description": "You think it's hard to find a good job. Have you tried finding a good developer? It's way harder.\r Out of 10 CVs recruiter receives only one or two are worth having an interview with. And it takes 15-20 interviews\r to finally select a suitable (in terms of experience, personality, budget) candidate. Who may just turn around\r and select another offer.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile1": "watchify src/background_apply.js -o extension/background_apply.min.js",
+    "compile2": "watchify src/content_apply.js -o extension/content_apply.min.js"
   },
   "repository": {
     "type": "git",

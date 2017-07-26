@@ -1,4 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class BackgroundApply {
@@ -27,7 +26,14 @@ class BackgroundApply {
             ],
             title: "Show Selectors",
         });
-        chrome.contextMenus.onClicked.addListener(this.menuItemShowSelectors.bind(this));
+        chrome.contextMenus.create({
+            id: 'saveJob',
+            contexts: [
+                "browser_action",
+            ],
+            title: "Save This Job",
+        });
+        chrome.contextMenus.onClicked.addListener(this.menuItemClickDispatch.bind(this));
     }
     clickIcon() {
         console.log('clickIcon');
@@ -43,7 +49,16 @@ class BackgroundApply {
     resultOfClick(response) {
         console.log('resultOfClick', response);
     }
-    menuItemShowSelectors() {
+    menuItemClickDispatch(event) {
+        console.log(event.menuItemId);
+        if (this[event.menuItemId]) {
+            this[event.menuItemId]();
+        }
+    }
+    /**
+     * Menu item
+     */
+    showSelectors() {
         console.log('menuItemShowSelectors');
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             console.log('tabs', tabs);
@@ -54,13 +69,18 @@ class BackgroundApply {
             }
         });
     }
+    /**
+     * Menu item
+     */
+    saveJob() {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            console.log('tabs', tabs);
+            if (tabs.length) {
+                console.log(tabs[0]);
+                let newURL = 'http://localhost/slawa/dev-jobz/htdocs/SaveJob?link=' + encodeURIComponent(tabs[0].url);
+                chrome.tabs.create({ url: newURL });
+            }
+        });
+    }
 }
 exports.BackgroundApply = BackgroundApply;
-
-},{}],2:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const BackgroundApply_1 = require("./BackgroundApply");
-new BackgroundApply_1.BackgroundApply();
-
-},{"./BackgroundApply":1}]},{},[2]);

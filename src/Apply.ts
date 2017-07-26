@@ -50,7 +50,7 @@ export class Apply {
 			document['apply'] = this;
 		}
 
-		this.resume = new JSONResume(require('./../fixture/thomasdavis.json'));
+		this.resume = new JSONResume(require('../extension/fixture/thomasdavis.json'));
 		// console.log(this.resume);
 	}
 
